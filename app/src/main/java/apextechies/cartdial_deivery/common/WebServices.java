@@ -11,4 +11,5 @@ public class WebServices {
     public static final String GETQUESTION = BASEURL+"get_question";
     public static final String INSERTUPDATE_QCSTATUS = BASEURL+"insert_qc_statue";
     public static final String ORDERLIST = BASEURL+"all_order_list";
+    public static final String UPDATEORDERSTATUS = DEZENTSBASEURL+"update_order_status";
 }

@@ -54,14 +54,21 @@ class OrderDetails: AppCompatActivity() {
     }
 
     private fun clickListener() {
-        /*nextTV.setOnClickListener {
-            if (input_orderId.text.toString().trim().equals("")){
-                Toast.makeText(this, "Enter Order ID First", Toast.LENGTH_SHORT).show()
-            }else {
-                startActivity(Intent(this, DeviceFeatureOptionActivity::class.java)
-                        .putExtra("orderid", input_orderId.text.toString()))
-            }
-        }*/
+        var list = ArrayList<NameValuePair>()
+        list.add(BasicNameValuePair("order_id", intent.getStringExtra("order_id")))
+       var web = Download_web(this, object : OnTaskCompleted {
+           override fun onTaskCompleted(response: String) {
+
+               if (response.length>0){
+
+               }
+
+           }
+       })
+
+        web.setData(list)
+        web.setReqType(false)
+        web.execute(WebServices.UPDATEORDERSTATUS)
     }
 
     fun checkPermissions(): Boolean {
