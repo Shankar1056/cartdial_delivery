@@ -10,7 +10,6 @@ import android.provider.Settings
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.BuildConfig
 import android.support.v4.app.ActivityCompat
-import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import apextechies.cartdial_deivery.R
@@ -18,6 +17,7 @@ import apextechies.cartdial_deivery.fragment.OrderList
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     private var mFusedLocationClient: FusedLocationProviderClient? = null
@@ -25,10 +25,11 @@ class MainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.navigation_home -> {
-                gotoragment(OrderList())
+                gotoragment(OrderList("1"))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_dashboard -> {
+                gotoragment(OrderList("2"))
                 return@OnNavigationItemSelectedListener true
             }
             R.id.navigation_notifications -> {
@@ -58,7 +59,18 @@ class MainActivity : AppCompatActivity() {
             getLastLocation()
         }
 
-        gotoragment(OrderList())
+        try {
+            if (intent.getStringExtra("from").equals("details")){
+                gotoragment(OrderList("2"))
+            }else
+            {
+                gotoragment(OrderList("1"))
+            }
+        }catch (e: Exception){
+            gotoragment(OrderList("1"))
+        }
+
+
     }
     fun checkPermissions(): Boolean {
         val permissionState = ActivityCompat.checkSelfPermission(this,

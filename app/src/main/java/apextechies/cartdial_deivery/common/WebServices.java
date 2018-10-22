@@ -12,4 +12,5 @@ public class WebServices {
     public static final String INSERTUPDATE_QCSTATUS = BASEURL+"insert_qc_statue";
     public static final String ORDERLIST = BASEURL+"all_order_list";
     public static final String UPDATEORDERSTATUS = DEZENTSBASEURL+"update_order_status";
+    public static final String UPDATEORDER = BASEURL+"update_order_list";
 }

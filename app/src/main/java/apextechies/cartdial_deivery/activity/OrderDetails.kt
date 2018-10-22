@@ -42,7 +42,7 @@ class OrderDetails: AppCompatActivity() {
         setContentView(R.layout.activity_details)
 
         initWidgit()
-        clickListener()
+
 
         call.setOnClickListener {
             if (!checkPermissions()) {
@@ -51,16 +51,28 @@ class OrderDetails: AppCompatActivity() {
                 makecall()
             }
         }
+
+        if (intent.getStringExtra("from").equals("2")){
+            nextTV.visibility = View.GONE
+        }
+        nextTV.setOnClickListener {
+            clickListener()
+        }
     }
 
     private fun clickListener() {
+        Utilz.showDailog(this, "plese wait...")
         var list = ArrayList<NameValuePair>()
         list.add(BasicNameValuePair("order_id", intent.getStringExtra("order_id")))
        var web = Download_web(this, object : OnTaskCompleted {
            override fun onTaskCompleted(response: String) {
 
+               Utilz.closeDialog()
                if (response.length>0){
 
+                   if (JSONObject(response).optString("status").equals("true")){
+                       updateorerList()
+                   }
                }
 
            }
@@ -69,6 +81,32 @@ class OrderDetails: AppCompatActivity() {
         web.setData(list)
         web.setReqType(false)
         web.execute(WebServices.UPDATEORDERSTATUS)
+    }
+
+    private fun updateorerList() {
+        Utilz.showDailog(this, "please wait...")
+        var list = ArrayList<NameValuePair>()
+        list.add(BasicNameValuePair("order_id", intent.getStringExtra("order_id")))
+        list.add(BasicNameValuePair("id", intent.getStringExtra("boy_id")))
+        var web = Download_web(this, object : OnTaskCompleted {
+            override fun onTaskCompleted(response: String) {
+
+                Utilz.closeDialog()
+                if (response.length>0){
+
+                    if (JSONObject(response).optString("status").equals("true")){
+                        startActivity(Intent(this@OrderDetails, MainActivity::class.java)
+                                .putExtra("from", "details"))
+                    }
+
+                }
+
+            }
+        })
+
+        web.setData(list)
+        web.setReqType(false)
+        web.execute(WebServices.UPDATEORDER)
     }
 
     fun checkPermissions(): Boolean {
@@ -129,7 +167,7 @@ class OrderDetails: AppCompatActivity() {
     private fun initWidgit() {
         prodRV.layoutManager = LinearLayoutManager(this)
         prodRV.isNestedScrollingEnabled = false
-        input_orderId.setText(intent.getStringExtra("order_id"))
+        input_orderId.setText("OrderId: "+intent.getStringExtra("order_id"))
         getOrderDetails()
     }
 

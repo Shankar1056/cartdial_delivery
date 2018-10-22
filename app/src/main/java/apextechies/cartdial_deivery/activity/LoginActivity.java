@@ -118,7 +118,8 @@ public class LoginActivity extends AppCompatActivity {
                                     ClsGeneral.setPreferences(LoginActivity.this, ConstantValue.USERID, jsonObject.optString("id"));
                                     ClsGeneral.setPreferences(LoginActivity.this, ConstantValue.APITOKEN, jsonObject.optString("api_token"));
 
-                                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                    startActivity(new Intent(LoginActivity.this, MainActivity.class)
+                                    .putExtra("from", "login"));
                                     finish();
                                 }
                             }
