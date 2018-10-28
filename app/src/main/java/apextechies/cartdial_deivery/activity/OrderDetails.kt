@@ -1,19 +1,19 @@
 package apextechies.cartdial_deivery.activity
 
 import android.Manifest
+import android.app.ActionBar
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v4.app.ActivityCompat
-import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
+import android.widget.Button
+import android.widget.EditText
 import apextechies.cartdial_deivery.BuildConfig
 import apextechies.cartdial_deivery.R
 import apextechies.cartdial_deivery.common.ClsGeneral
@@ -29,6 +29,7 @@ import org.apache.http.NameValuePair
 import org.apache.http.message.BasicNameValuePair
 import org.json.JSONException
 import org.json.JSONObject
+
 
 class OrderDetails: AppCompatActivity() {
 
@@ -56,14 +57,36 @@ class OrderDetails: AppCompatActivity() {
             nextTV.visibility = View.GONE
         }
         nextTV.setOnClickListener {
-            clickListener()
+            clickListener("wc-picked", "1")
+        }
+        cancelTV.setOnClickListener {
+            showCancelDialog()
+
         }
     }
 
-    private fun clickListener() {
+    private fun showCancelDialog() {
+        val dialog = Dialog(this@OrderDetails)
+        dialog.setContentView(R.layout.custodialog)
+        dialog.setTitle("Hello")
+        val reasonET = dialog.findViewById(R.id.reasonET) as EditText
+        val cancelTN = dialog.findViewById(R.id.cancelTN) as Button
+
+        cancelTN.setOnClickListener {
+            clickListener("wc-refunded", "3")
+        }
+
+        dialog.show()
+        val window = dialog.getWindow()
+        window.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
+
+    }
+
+    private fun clickListener(status: String, updatestatus: String) {
         Utilz.showDailog(this, "plese wait...")
         var list = ArrayList<NameValuePair>()
         list.add(BasicNameValuePair("order_id", intent.getStringExtra("order_id")))
+        list.add(BasicNameValuePair("status", status))
        var web = Download_web(this, object : OnTaskCompleted {
            override fun onTaskCompleted(response: String) {
 
@@ -71,7 +94,7 @@ class OrderDetails: AppCompatActivity() {
                if (response.length>0){
 
                    if (JSONObject(response).optString("status").equals("true")){
-                       updateorerList()
+                       updateorerList(updatestatus)
                    }
                }
 
@@ -83,11 +106,12 @@ class OrderDetails: AppCompatActivity() {
         web.execute(WebServices.UPDATEORDERSTATUS)
     }
 
-    private fun updateorerList() {
+    private fun updateorerList(updatestatus: String) {
         Utilz.showDailog(this, "please wait...")
         var list = ArrayList<NameValuePair>()
         list.add(BasicNameValuePair("order_id", intent.getStringExtra("order_id")))
         list.add(BasicNameValuePair("id", intent.getStringExtra("boy_id")))
+        list.add(BasicNameValuePair("status", updatestatus))
         var web = Download_web(this, object : OnTaskCompleted {
             override fun onTaskCompleted(response: String) {
 

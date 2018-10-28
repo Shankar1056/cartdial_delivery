@@ -28,6 +28,7 @@
     <string name="nc">NC</string>
     <string name="yes">YES</string>
     <string name="devicepicked">Device Picked</string>
+    <string name="cancel">Cancel</string>
 
 
 </resources>

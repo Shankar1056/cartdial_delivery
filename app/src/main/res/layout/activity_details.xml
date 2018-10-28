@@ -224,20 +224,38 @@
 
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:layout_alignParentBottom="true">
     <TextView
         android:id="@+id/nextTV"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary"
         android:fontFamily="@font/proxima_nova_bold"
         android:gravity="center"
+        android:layout_weight=".5"
         android:text="@string/devicepicked"
         android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="17sp">
 
     </TextView>
+    <TextView
+        android:id="@+id/cancelTV"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:fontFamily="@font/proxima_nova_bold"
+        android:gravity="center"
+        android:background="@color/colorAccent"
+        android:layout_weight=".5"
+        android:text="@string/cancel"
+        android:textAllCaps="true"
+        android:textColor="@color/white"
+        android:textSize="17sp">
 
+    </TextView>
+</LinearLayout>
 </RelativeLayout>
